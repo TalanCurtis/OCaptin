@@ -1,4 +1,6 @@
 insert into admins(
+    user_name,
+    password,
     permission,
     first_name,
     last_name,
@@ -6,6 +8,8 @@ insert into admins(
     auth_id
 )
 values (
+    'Bolo',
+    '123',
     'admin',
     'Bolo',
     'Jenkins',
