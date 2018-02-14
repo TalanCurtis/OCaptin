@@ -18,3 +18,14 @@ p, a, div, button {
 body {
   background: $light;
 }
+
+.selected{
+  font-Weight: bold;
+  color: red;
+}
+
+.Placeholder{
+  height: 200px;
+  width: 200px;
+  background-color: hotpink;
+}
