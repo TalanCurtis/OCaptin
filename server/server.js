@@ -20,10 +20,16 @@ app.use(bodyParser.json());
 
 // Controller Imports
 const tc = require('./controllers/test_controller');
+const ac = require('./controllers/auth_controller');
 
 //Endpoints
 //// Test: it works.
 app.get('/api/test', tc.testGet)
+
+// Auth
+app.post('/api/login', ac.login)
+app.post('/api/register', ac.register)
+//app.post('/api/logout', ac.logout)
 
 
 // Set Server to listen
