@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import {testAction} from '../ducks/reducers/test';
 
 class Header extends Component {
     constructor(props) {
@@ -23,9 +25,24 @@ class Header extends Component {
                 <div>
                     <h1>{this.state.pageTitle}</h1>
                 </div>
+                <div>
+                    <button onClick={this.props.testAction}>test store</button>
+                    {JSON.stringify(this.props)}
+                    {JSON.stringify(this.props.testState)}
+                </div>
             </div>
         )
     }
 }
+const outputActions = {
+    testAction: testAction
+}
 
-export default Header;
+function mapStateToProps(state){
+    const{testState} = state
+    return {
+        testState
+    }
+}
+
+export default connect(mapStateToProps, outputActions)(Header);
