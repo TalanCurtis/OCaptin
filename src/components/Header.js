@@ -11,6 +11,10 @@ class Header extends Component {
         }
     }
     componentDidMount(){
+        // check here to see if user has a session
+    }
+    handleLogout(){
+        console.log('logout')
     }
     render() {
         return (
@@ -30,6 +34,7 @@ class Header extends Component {
                     {JSON.stringify(this.props)}
                     {JSON.stringify(this.props.testState)}
                 </div>
+                <button onClick={()=>this.handleLogout()}>Logout</button>
             </div>
         )
     }

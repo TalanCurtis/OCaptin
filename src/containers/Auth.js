@@ -17,14 +17,11 @@ class Auth extends Component {
     }
 
     handleLogin() {
-        console.log('handleLogin')
         let body = this.state;
         axios.post('/api/login', body).then(res=>{
-            console.log(res)
             this.setState({error:false})
             this.props.history.push('/Home')
         }).catch(err=>{
-            console.log(err)
             this.setState({error:true})
         })
 
