@@ -16,7 +16,7 @@ class Classes extends Component {
         // go get list of classes by user id
         let id = this.props.user.id
         axios.get(`/api/classes/${id}`).then((res) => {
-            console.log('res:', res.data);
+            //console.log('res:', res.data);
             this.setState({ classes: res.data });
         })
     }

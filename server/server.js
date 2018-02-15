@@ -123,9 +123,24 @@ app.get('/api/classes/:id', (req, res, next) => {
     let id = req.params.id;
     // go get db info
     const db = app.get('db');
-    db.userInfo.get_all_classes([id]).then(dbResponse => {
+    db.getInfo.get_all_classes([id]).then(dbResponse => {
         // return that info
         res.status(200).send(dbResponse)
+    })
+})
+
+app.get('/api/class/:id', (req, res, next) => {
+    // making two db hits one for students and another for 
+    // assignments sending both back in one response.
+    console.log('class endpoint hit')
+    let id = req.params.id;
+    const db = app.get('db');
+    db.getInfo.get_students_in_class([id]).then(students => {
+        // return that info
+        db.getInfo.get_assignments_in_class([id]).then(assignments=>{
+            let combine=[students, assignments]
+            res.status(200).send(combine)
+        })
     })
 })
 
