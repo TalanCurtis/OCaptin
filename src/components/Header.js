@@ -23,6 +23,9 @@ class Header extends Component {
                 <div>
                     <h1>{this.state.pageTitle}</h1>
                 </div>
+                <a href="http://localhost:3007/logout">
+                    <button>Logout</button>
+                </a>
             </div>
         )
     }
