@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express'),
     cors = require('cors'),
-    session = require('express-session'),
+
     massive = require('massive'),
     passport = require('passport'),
     Auth0Strategy = require('passport-auth0')
@@ -9,13 +9,19 @@ const express = require('express'),
 app = express()
 
 // Destructuring .env
+<<<<<<< HEAD
 const { SERVER_PORT, SESSION_SECRET, DOMAIN, CLIENT_ID, CLIENT_SECRET, CALLBACK_URL, CONNECTION_STRING } = process.env;
+=======
+const { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env;
+>>>>>>> 888188e2cac2819545d5afd70db5cafbf7cdf340
 
 // Connect to Database
 massive({ connectionString: CONNECTION_STRING }).then(db => app.set('db', db))
 
 // Middleware imports
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser'),
+    session = require('express-session'),
+    checkForSession = require('./middleware/checkForSession')
 
 // Top Level Middleware
 app.use(bodyParser.json());
@@ -23,6 +29,7 @@ app.use(session({
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true
+<<<<<<< HEAD
 }));
 ///////////////////////////
 /// Swippity swap/////////////
@@ -80,14 +87,21 @@ passport.deserializeUser((id, done) => {
         done(null, dbResponse[0])
     })
 });
+=======
+    // expires: 2000
+}))
+app.use(checkForSession);
+>>>>>>> 888188e2cac2819545d5afd70db5cafbf7cdf340
 
 // Controller Imports
 const tc = require('./controllers/test_controller');
+const ac = require('./controllers/auth_controller');
 
 //Endpoints
 //// Test: it works.
 app.get('/api/test', tc.testGet)
 
+<<<<<<< HEAD
 //// Auth 0 
 app.get('/auth', passport.authenticate('auth0'));
 app.get('/auth/callback', passport.authenticate('auth0', {
@@ -108,6 +122,14 @@ app.get('/logout', (req, res) => {
     req.logout();
     return res.redirect('http://localhost:3000/')
 })
+=======
+// Auth
+app.post('/api/login', ac.login)
+app.post('/api/register', ac.register)
+//app.get('/auth/me', req.session.user)
+//app.post('/api/logout', ac.logout)
+
+>>>>>>> 888188e2cac2819545d5afd70db5cafbf7cdf340
 
 // Set Server to listen
 app.listen(SERVER_PORT, () => (console.log(`Sailing on port: ${SERVER_PORT}`)))

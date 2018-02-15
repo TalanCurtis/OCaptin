@@ -6,7 +6,6 @@ class Classes extends Component{
     render(){
         return(
             <div className='Classes'> 
-                Classes Container
                 <Header pageTitle='Classes'/>
             </div>
         )
