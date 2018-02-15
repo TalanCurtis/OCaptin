@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getUser } from '../ducks/reducers/users';
+
 
 class Header extends Component {
     constructor(props) {
@@ -9,6 +12,8 @@ class Header extends Component {
         }
     }
     componentDidMount(){
+        this.props.getUser();
+        console.log(this.props)        
     }
     render() {
         return (
@@ -20,6 +25,7 @@ class Header extends Component {
                     <NavLink to='/Class' exact activeClassName="selected" >Class</NavLink>
                     <NavLink to='/Class/Student' exact activeClassName="selected" >Class/Student</NavLink>
                 </div>
+                {JSON.stringify(this.props)}
                 <div>
                     <h1>{this.state.pageTitle}</h1>
                 </div>
@@ -31,4 +37,14 @@ class Header extends Component {
     }
 }
 
-export default Header;
+const outputActions= {
+    getUser: getUser
+}
+
+function mapStateToProps(state){
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps, outputActions)(Header);

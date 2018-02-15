@@ -54,6 +54,7 @@ passport.use(new Auth0Strategy({
     scope: 'openid profile'
 }, function (accessToken, refreshToken, extraParams, profile, done) {
     const db = app.get('db');
+    // this is what you get back from auth0 profile._json
     const { sub, name, picture } = profile._json;
 
     db.auth.find_user([sub]).then(dbResponse => {
@@ -105,7 +106,7 @@ app.get('/auth/me', (req, res) => {
 // prevent browser from caching previos page.
 app.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('http://localhost:3000/')
+    return res.redirect('http://localhost:3000/')
 })
 
 // Set Server to listen

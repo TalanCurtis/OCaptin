@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Initial State
+// Initial State user = {}
 const intialState = {
     user:{}
 }
