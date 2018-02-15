@@ -29,15 +29,17 @@ app.use(session({
 ///////////////////////////
 /// Swippity swap/////////////
 // Avoid login with auth0 ////
-// match object to req.user///
+// match object to req.user the wherever you use req.user you can use req.session.user then replace///
 app.use((req, res, next) => {
     if (!req.session.user) {
         req.session.user = {
-            user_id: 1,
-            user_name: "testing",
-            email: "B32alls@gmail.com",
-            name: " ",
-            profile_picture: "http://www.placekitten.com/200/250"
+            id: 16,
+            role: 'teacher',
+            user_name: "Testy",
+            first_name: "Testy",
+            last_name: "McTesterson",
+            email: "Testies@gmail.com",
+            img: "http://www.placekitten.com/200/250"
         }
     }
     next()
@@ -57,14 +59,16 @@ passport.use(new Auth0Strategy({
 }, function (accessToken, refreshToken, extraParams, profile, done) {
     const db = app.get('db');
     // this is what you get back from auth0 profile._json
-    const { sub, name, picture } = profile._json;
+    const { sub, name, picture, given_name, family_name } = profile._json;
+    console.log('test')
 
     db.auth.find_user([sub]).then(dbResponse => {
         if (dbResponse[0]) {
+            console.log('test')
             done(null, dbResponse[0].id)
         } else {
             // create a user and sends it back
-            db.auth.create_user([name, picture, sub]).then(dbResponse => {
+            db.auth.create_user([name, picture, sub, given_name, family_name]).then(dbResponse => {
                 done(null, dbResponse[0].id)
             })
         }
@@ -99,11 +103,11 @@ app.get('/auth/callback', passport.authenticate('auth0', {
 //////// This enpoint checks to see if user is still loged in
 ///// put this check on component did mount to see if user still valid
 app.get('/auth/me', (req, res) => {
-    if (!req.user) {
+    if (!req.session.user) {
         res.status(404).send({})
         // return res.redirect('http://localhost:3000/')
     } else {
-        res.status(200).send(req.user)
+        res.status(200).send(req.session.user)
     }
 })
 // when login out if  you hit back chrome has cached your page. How do you stop?
@@ -111,6 +115,18 @@ app.get('/auth/me', (req, res) => {
 app.get('/logout', (req, res) => {
     req.logout();
     return res.redirect('http://localhost:3000/')
+})
+
+// Teacher Endpoints
+app.get('/api/classes/:id', (req, res, next) => {
+    console.log('classes endpoint hit')
+    let id = req.params.id;
+    // go get db info
+    const db = app.get('db');
+    db.userInfo.get_all_classes([id]).then(dbResponse => {
+        // return that info
+        res.status(200).send(dbResponse)
+    })
 })
 
 // Set Server to listen

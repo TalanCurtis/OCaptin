@@ -3,6 +3,10 @@ import Header from '../components/Header';
 
 
 class Class extends Component{
+
+    componentDidMount(){
+        
+    }
     render(){
         return(
             <div className='Class'> 
