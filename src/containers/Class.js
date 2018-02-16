@@ -19,7 +19,6 @@ class Class extends Component {
         // Then populate state lists with data
         let class_id = this.props.location.pathname.split('/').pop()
         axios.get('/api/class/' + class_id).then(res => {
-            console.log(res.data)
             let tests = res.data[1].filter(x => (x.kind === 'test'))
             let assignments = res.data[1].filter(x => (x.kind === 'assignment'))
             this.setState({
@@ -30,6 +29,7 @@ class Class extends Component {
         })
     }
     render() {
+        // generate lists
         let tests = this.state.tests.map((test, i) => {
             return (
                 <div key={i}><Link to={'/test/' + test.id}>{test.description}</Link></div>

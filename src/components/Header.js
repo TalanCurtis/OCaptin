@@ -14,7 +14,7 @@ class Header extends Component {
     componentDidMount() {
         this.props.getUser();
     }
-    
+
     render() {
         return (
             <div className='Header'>
@@ -26,11 +26,12 @@ class Header extends Component {
                     <NavLink to='/Class/Student' exact activeClassName="selected" >Class/Student</NavLink>
                 </div>
                 <div>
-                    <h1>{this.state.pageTitle}</h1>
+                    <h2>{this.state.pageTitle}</h2>
+                    <a href="http://localhost:3007/logout">
+                        <button>Logout</button>
+                    </a>
                 </div>
-                <a href="http://localhost:3007/logout">
-                    <button>Logout</button>
-                </a>
+
             </div>
         )
     }
