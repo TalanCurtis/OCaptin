@@ -11,8 +11,10 @@ class Classes extends Component {
         super();
         this.state = {
             classes: [],
-            toggle: true
+            toggle: true,
+            tests: [1, 5, 3, 6, 5, 9, 11, 4]
         }
+        this.handleOrganizeBy = this.handleOrganizeBy.bind(this)
     }
     componentDidMount() {
         // go get list of classes by user id
@@ -22,32 +24,40 @@ class Classes extends Component {
         })
     }
 
-    handleOrganzieBy() {
-        // this is where I toggle between alphabetical order. roughed version
-        // todo hook up to organizeBy comp
-        if(this.state.toggle){
-            let newOrder = this.state.classes.sort(function (a, b) {
-                var textA = a.class_name.toUpperCase();
-                var textB = b.class_name.toUpperCase();
-                return (textA > textB) ? -1 : (textA < textB) ? 1 : 0;
-            }) 
-            this.setState({
-                toggle: !this.state.toggle,
-                classes: newOrder
-            })          
-        } else {
-            let newOrder =  this.state.classes.sort(function (a, b) {
-                var textA = a.class_name.toUpperCase();
-                var textB = b.class_name.toUpperCase();
-                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-            }) 
-            this.setState({
-                toggle: !this.state.toggle,
-                classes: newOrder
-            })                 
+    handleOrganizeBy(name, value) {
+        let tog = this.state.toggle
+        let newOrder = []
+        switch (value) {
+            case 'alpha':
+                newOrder = this.state[name].sort(function (a, b) {
+                    let textA = a.class_name.toUpperCase();
+                    let textB = b.class_name.toUpperCase();
+                    return (tog ? (textA > textB) : (textA < textB))
+                })
+                this.setState({
+                    [name]: newOrder,
+                    toggle: !this.state.toggle
+                })
+                console.log(this.state.classes)
+                break;
+            case 'numeric':
+                console.log('numeric')
+                newOrder = this.state[name].sort(function (a, b) {
+                    return (tog ? (a > b) : (a < b))
+                })
+                this.setState({
+                    [name]: newOrder,
+                    toggle: !this.state.toggle
+                })
+                console.log(this.state.classes)
+                break;
+            default:
+                console.log('incorrect input')
+                break;
         }
     }
     render() {
+        console.log(this.state.classes)
         let classes = this.state.classes.map((x, i) => {
             return (
                 <div key={i}>
@@ -56,12 +66,31 @@ class Classes extends Component {
                     </Link>
                 </div>)
         })
+        let tests = this.state.tests.map((x, i) => {
+            return (
+                <div key={i}>
+                    <Link to={``}>
+                        {x}
+                    </Link>
+                </div>)
+        })
         return (
             <div className='Classes'>
                 <Header pageTitle='Classes' />
-                <OrganizeBy buttons={['Class', 'Avererage', 'Tests', "Assignments", 'Attendance']} />
-                <button onClick={() => { this.handleOrganzieBy() }}>orderby</button>
-                {classes}
+                <OrganizeBy
+                    handleOrganizeBy={this.handleOrganizeBy}
+                    buttons={[
+                        { name: 'classes', value: 'alpha' },
+                        { name: 'avererage', value: 'numeric' },
+                        { name: 'tests', value: 'numeric' },
+                        { name: 'assignments', value: 'numeric' },
+                        { name: 'attendance', value: 'numeric' }
+                    ]} />
+                <div>
+                    {classes}
+                    {tests}
+                </div>
+
             </div>
         )
     }

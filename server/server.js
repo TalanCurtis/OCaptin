@@ -102,6 +102,7 @@ app.get('/auth/callback', passport.authenticate('auth0', {
 }))
 //////// This enpoint checks to see if user is still loged in
 ///// put this check on component did mount to see if user still valid
+/// switch req.session.user <> req.user
 app.get('/auth/me', (req, res) => {
     if (!req.session.user) {
         res.status(404).send({})
