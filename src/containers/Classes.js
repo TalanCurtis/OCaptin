@@ -24,40 +24,37 @@ class Classes extends Component {
         })
     }
 
-    handleOrganizeBy(name, value) {
+    handleOrganizeBy(stateArray, order) {
+        // reused variable in swtich
         let tog = this.state.toggle
         let newOrder = []
-        switch (value) {
+        switch (order) {
             case 'alpha':
-                newOrder = this.state[name].sort(function (a, b) {
+                newOrder = this.state[stateArray].sort(function (a, b) {
                     let textA = a.class_name.toUpperCase();
                     let textB = b.class_name.toUpperCase();
                     return (tog ? (textA > textB) : (textA < textB))
                 })
                 this.setState({
-                    [name]: newOrder,
+                    [stateArray]: newOrder,
                     toggle: !this.state.toggle
                 })
-                console.log(this.state.classes)
                 break;
             case 'numeric':
-                console.log('numeric')
-                newOrder = this.state[name].sort(function (a, b) {
+                newOrder = this.state[stateArray].sort(function (a, b) {
                     return (tog ? (a > b) : (a < b))
                 })
                 this.setState({
-                    [name]: newOrder,
+                    [stateArray]: newOrder,
                     toggle: !this.state.toggle
                 })
-                console.log(this.state.classes)
                 break;
             default:
-                console.log('incorrect input')
+                console.log('incorrect input', stateArray, order)
                 break;
         }
     }
     render() {
-        console.log(this.state.classes)
         let classes = this.state.classes.map((x, i) => {
             return (
                 <div key={i}>
@@ -80,11 +77,11 @@ class Classes extends Component {
                 <OrganizeBy
                     handleOrganizeBy={this.handleOrganizeBy}
                     buttons={[
-                        { name: 'classes', value: 'alpha' },
-                        { name: 'avererage', value: 'numeric' },
-                        { name: 'tests', value: 'numeric' },
-                        { name: 'assignments', value: 'numeric' },
-                        { name: 'attendance', value: 'numeric' }
+                        { name: 'Classes', stateArray: 'classes', order: 'alpha' },
+                        { name: 'Average' , stateArray: 'avererage', order: 'numeric' },
+                        { name: 'Tests' ,stateArray: 'tests', order: 'numeric' },
+                        { name: 'Assignments', stateArray: 'assignments', order: 'numeric' },
+                        { name:'Attendace', stateArray: 'attendance', order: 'numeric' }
                     ]} />
                 <div>
                     {classes}
