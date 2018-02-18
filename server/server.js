@@ -145,5 +145,16 @@ app.get('/api/class/:id', (req, res, next) => {
     })
 })
 
+app.get('/api/home/:id', (req, res, next) => {
+    console.log('classes endpoint hit')
+    let id = req.params.id;
+    // go get db info
+    const db = app.get('db');
+    db.getInfo.get_all_for_teacher([id]).then(dbResponse => {
+        // return that info
+        res.status(200).send(dbResponse)
+    })
+})
+
 // Set Server to listen
 app.listen(SERVER_PORT, () => (console.log(`Sailing on port: ${SERVER_PORT}`)))
