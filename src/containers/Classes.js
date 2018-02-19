@@ -99,7 +99,7 @@ class Classes extends Component {
             let averageClass = ((this.averageTests(x.students) + this.averageAssignments(x.students)) /2).toFixed(1);
             return (
                 <div key={i}>
-                    <Link to={'/class/' + x.class_id}>
+                    <Link to={'/class/' + x.class_id}  style={{ textDecoration: 'none' }}>
                         <span className='ClassesInfo'>
                             <h3>
                                 {x.class_name}
