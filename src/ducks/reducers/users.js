@@ -94,7 +94,8 @@ export function getTeacherClasses(id){
                         id : res.data[k].mark_id,
                         score: res.data[k].mark_score,
                         score_max: res.data[k].assignment_max,
-                        assingmnet_id: res.data[k].assignment_id
+                        assingmnet_id: res.data[k].assignment_id,
+                        kind: res.data[k].assignment_kind
                     })
                     }
                 }

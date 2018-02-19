@@ -10,18 +10,9 @@ class Classes extends Component {
     constructor() {
         super();
         this.state = {
-            classes: [],
-            toggle: true,
-            tests: [1, 5, 3, 6, 5, 9, 11, 4]
+            toggle: true
         }
         this.handleOrganizeBy = this.handleOrganizeBy.bind(this)
-    }
-    componentDidMount() {
-        // go get list of classes by user id
-        let id = this.props.user.id
-        axios.get(`/api/classes/${id}`).then((res) => {
-            this.setState({ classes: res.data });
-        })
     }
 
     handleOrganizeBy(stateArray, order) {
@@ -54,22 +45,43 @@ class Classes extends Component {
                 break;
         }
     }
+
+    averageTests(students) {
+        let testScores = 0
+        let amountOfTests = 0
+
+        for (let i in students) {
+            for (let j in students[i].marks) {
+                if (students[i].marks[j].kind === 'test') {
+                    amountOfTests++
+                    let percent = (students[i].marks[j].score / students[i].marks[j].score_max) * 100
+                    testScores += percent
+                }
+            }
+        }
+
+        let total = (testScores / amountOfTests).toFixed(1)
+        return total
+
+    }
+
     render() {
-        let classes = this.state.classes.map((x, i) => {
+        console.log('props on classes: ', this.props)
+        let classes = this.props.classes.map((x, i) => {
             return (
                 <div key={i}>
-                    <Link to={`/Class/${x.id}`}>
-                        {x.class_name}
-                    </Link>
-                </div>)
-        })
-        let tests = this.state.tests.map((x, i) => {
-            return (
-                <div key={i}>
-                    <Link to={``}>
-                        {x}
-                    </Link>
-                </div>)
+                    <span>
+                        <h3> {x.class_name}
+                            {' -'}
+                            {'       -'}
+                            {this.averageTests(x.students) < 65 ?
+                                <h3 style={{ 'color': 'red' }}>{this.averageTests(x.students)}</h3> :
+                                <h3>{this.averageTests(x.students)}</h3>}}
+                            {'        -'}
+                        </h3>
+                    </span>
+                </div>
+            )
         })
         return (
             <div className='Classes'>
@@ -78,14 +90,13 @@ class Classes extends Component {
                     handleOrganizeBy={this.handleOrganizeBy}
                     buttons={[
                         { name: 'Classes', stateArray: 'classes', order: 'alpha' },
-                        { name: 'Average' , stateArray: 'avererage', order: 'numeric' },
-                        { name: 'Tests' ,stateArray: 'tests', order: 'numeric' },
+                        { name: 'Average', stateArray: 'avererage', order: 'numeric' },
+                        { name: 'Tests', stateArray: 'tests', order: 'numeric' },
                         { name: 'Assignments', stateArray: 'assignments', order: 'numeric' },
-                        { name:'Attendace', stateArray: 'attendance', order: 'numeric' }
+                        { name: 'Attendace', stateArray: 'attendance', order: 'numeric' }
                     ]} />
                 <div>
                     {classes}
-                    {tests}
                 </div>
 
             </div>
@@ -94,9 +105,7 @@ class Classes extends Component {
 }
 
 function mapStateToProps(state) {
-    return {
-        user: state.user
-    }
+    return state
 }
 
 export default connect(mapStateToProps)(Classes);
