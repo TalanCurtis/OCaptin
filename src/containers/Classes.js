@@ -10,9 +10,18 @@ class Classes extends Component {
     constructor() {
         super();
         this.state = {
-            toggle: true
+            toggle: true,
+            classes: [],
+            assignments: [],
+            average: [],
+            test: []
         }
         this.handleOrganizeBy = this.handleOrganizeBy.bind(this)
+    }
+    componentDidMount() {
+        this.setState({
+            classes: this.props.classes
+        })
     }
 
     handleOrganizeBy(stateArray, order) {
@@ -60,31 +69,60 @@ class Classes extends Component {
             }
         }
 
-        let total = (testScores / amountOfTests).toFixed(1)
+        //let total = Math.floor((testScores / amountOfTests))
+        let total = (testScores / amountOfTests).toFixed(1)*1
         return total
-
     }
+
+    averageAssignments(students) {
+        let assignmentScores = 0
+        let amountOfAssignments = 0
+        for (let i in students) {
+            for (let j in students[i].marks) {
+                if (students[i].marks[j].kind === 'assignment') {
+                    amountOfAssignments++
+                    let percent = (students[i].marks[j].score / students[i].marks[j].score_max) * 100
+                    assignmentScores += percent
+                }
+            }
+        }
+        //let total = Math.floor((assignmentScores / amountOfAssignments))
+        let total = (assignmentScores / amountOfAssignments).toFixed(1)*1
+        return total
+    }
+    // TODO averageAttendace
 
     render() {
         console.log('props on classes: ', this.props)
+        // Create the list of classes and display their stats
         let classes = this.props.classes.map((x, i) => {
+            let averageClass = ((this.averageTests(x.students) + this.averageAssignments(x.students)) /2).toFixed(1);
             return (
                 <div key={i}>
-                    <span>
-                        <h3> {x.class_name}
-                            {' -'}
-                            {'       -'}
+                    <Link to={'/class/' + x.class_id}>
+                        <span className='ClassesInfo'>
+                            <h3>
+                                {x.class_name}
+                            </h3>
+                            {averageClass < 65 ?
+                                <h3 style={{ 'color': 'red' }}> {averageClass}</h3>
+                                :
+                                <h3>{averageClass}</h3>
+                            }
                             {this.averageTests(x.students) < 65 ?
                                 <h3 style={{ 'color': 'red' }}>{this.averageTests(x.students)}</h3> :
-                                <h3>{this.averageTests(x.students)}</h3>}}
-                            {'        -'}
-                        </h3>
-                    </span>
+                                <h3>{this.averageTests(x.students)}</h3>}
+                            {this.averageAssignments(x.students) < 65 ?
+                                <h3 style={{ 'color': 'red' }}>{this.averageAssignments(x.students)}</h3> :
+                                <h3>{this.averageAssignments(x.students)}</h3>}
+                            {'-'}
+                        </span>
+                    </Link>
                 </div>
             )
         })
         return (
-            <div className='Classes'>
+            <div className='Classes' >
                 <Header pageTitle='Classes' />
                 <OrganizeBy
                     handleOrganizeBy={this.handleOrganizeBy}
