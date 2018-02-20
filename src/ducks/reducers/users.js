@@ -74,7 +74,8 @@ export function getTeacherClasses(id){
                             id: res.data[i].assignment_id,
                             desc: res.data[i].assignment_desc,
                             max: res.data[i].assignment_max,
-                            kind: res.data[i].assignment_kind
+                            kind: res.data[i].assignment_kind,
+                            dateDue: res.data[i].assignment_due_date
                         })
                     }
                 }

@@ -70,6 +70,25 @@ class InfoBox extends Component {
                 })
                 this.setState({ list: newList })
                 break;
+            case 'tests':
+                console.log('tests props:', this.props)
+                newList = this.props.dataList.filter((x) => x.kind === 'test')
+                newList = newList.map((x, i) => {
+                    return {
+                        name: x.desc,
+                        max_score: x.max,
+                        assignment_id: x.id,
+                        date_due: x.dateDue
+                    }
+                })
+                // alphabetizing base list
+                // newList.sort((a, b) => {
+                //     let textA = a.name.toUpperCase();
+                //     let textB = b.name.toUpperCase();
+                //     return (textA > textB)
+                // })
+                this.setState({ list: newList })
+                break;
             default:
                 return console.log('makeStateList defaulted');
         }
@@ -121,6 +140,17 @@ class InfoBox extends Component {
                                 <h4>{x.average}</h4>
                             </div>
                         </Link>
+                    )
+                })
+                return list;
+            case 'tests':
+                list = this.state.list.map((x, i) => {
+                    return (
+                        <div key={i} className='InfoBoxContainer'>
+                            <h4>{x.name}</h4>
+                            <h4>{x.max_score}</h4>
+                            <h4>{x.date_due}</h4>
+                        </div>
                     )
                 })
                 return list;
