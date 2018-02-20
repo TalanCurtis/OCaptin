@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class InfoBox extends Component {
+    constructor() {
+        super();
+        this.state = {
+            sortByToggle: false,
+            sortByList:[],
+        }
+    }
     componentDidMount() {
         console.log('InfoBox props: ', this.props)
     }
@@ -42,7 +49,20 @@ class InfoBox extends Component {
     }
 
     sortBy(property) {
+        // THIS IS NOT WORKING CORRECTLY  sort reoders the original arr.
+        // thinking i need to store a list of the info to display on state
+        // send that to the renderer
+        // then sortBy while take the list stored change the order then set state.
         console.log(' sort by clicked', property)
+        let newOrder = []
+        this.props.dataList.sort((a, b) => {
+            let textA = a.class_name.toUpperCase();
+            let textB = b.class_name.toUpperCase();
+            return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
+        })
+        this.setState({
+            sortByToggle: !this.state.sortByToggle
+        })
     }
 
     test() {
@@ -50,14 +70,14 @@ class InfoBox extends Component {
     }
 
     displayInfo(displaySwitch) {
-        let list= []
+        let list = []
         switch (displaySwitch) {
             case 'classes':
                 list = this.props.dataList.map((x, i) => {
                     let averageClass = ((this.averageTests(x.students) + this.averageAssignments(x.students)) / 2).toFixed(1);
                     return (
                         <Link key={i} to={'/class/' + x.class_id} style={{ textDecoration: 'none' }}>
-                            <div  className='InfoBoxContainer'>
+                            <div className='InfoBoxContainer'>
                                 <h4>{x.class_name}</h4>
                                 <h4>{this.averageTests(x.students)}</h4>
                                 <h4>{this.averageAssignments(x.students)}</h4>
@@ -66,6 +86,7 @@ class InfoBox extends Component {
                         </Link>
                     )
                 })
+                console.log('list: ', list)
                 return list;
             default:
                 return console.log('display info defaulted')
