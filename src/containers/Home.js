@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import {getTeacherClasses} from '../ducks/reducers/users'
 
 class Home extends Component {
@@ -13,7 +12,7 @@ class Home extends Component {
 
     handleOnClick(){
         console.log('this is current state: ', this.props)
-        
+
     }
     render() {
         return (
