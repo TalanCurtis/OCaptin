@@ -18,10 +18,10 @@ class Classes extends Component {
                     displaySwitch='classes'
                     dataList={this.props.classes}
                     sortByButtons={[
-                        {name: 'Class', kind:'alpha', property:'class_name'},
-                        {name: 'Tests', kind:'numeric', property:'tests'},
-                        {name: 'Assignments', kind:'numeric', property:'assignments'},
-                        {name: 'Average', kind:'numeric', property:'average'}
+                        {name: 'Class', kind:'alpha', key:'name'},
+                        {name: 'Tests', kind:'numeric', key:'tests'},
+                        {name: 'Assignments', kind:'numeric', key:'assignments'},
+                        {name: 'Average', kind:'numeric', key:'average'}
                         
                     ]}
                 />
