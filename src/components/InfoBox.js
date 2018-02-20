@@ -10,9 +10,7 @@ class InfoBox extends Component {
         }
     }
     componentDidMount() {
-        console.log('InfoBox props: ', this.props)
-        this.makeStateList()
-        console.log('state: ', this.state)
+        this.makeStateList(this.props.displaySwitch)
     }
 
     averageTests(students) {
@@ -48,19 +46,34 @@ class InfoBox extends Component {
         return total
     }
 
-    makeStateList() {
-        let newList = this.props.dataList.map((x, i) => {
-            let average = ((this.averageTests(x.students) + this.averageAssignments(x.students)) / 2).toFixed(1);
-            return {
-                name: x.class_name,
-                tests: this.averageTests(x.students),
-                assignments: this.averageAssignments(x.students),
-                average: average,
-                class_id: x.class_id
+    makeStateList(displaySwitch) {
+        // makeStateList creates a list to populate state off of what info we want the infoBox to display
+        let newList = []
+        switch (displaySwitch) {
+            case 'classes':
+                newList = this.props.dataList.map((x, i) => {
+                    let average = ((this.averageTests(x.students) + this.averageAssignments(x.students)) / 2).toFixed(1);
+                    return {
+                        name: x.class_name,
+                        tests: this.averageTests(x.students),
+                        assignments: this.averageAssignments(x.students),
+                        average: average,
+                        class_id: x.class_id
 
-            }
-        })
-        this.setState({ list: newList })
+                    }
+                })
+                // alphabetizing base list
+                newList.sort((a, b) => {
+                    let textA = a.name.toUpperCase();
+                    let textB = b.name.toUpperCase();
+                    return (textA > textB)
+                })
+                this.setState({ list: newList })
+                break;
+            default:
+                return console.log('makeStateList defaulted');
+        }
+
     }
 
     sortBy(key, kind) {
@@ -74,7 +87,7 @@ class InfoBox extends Component {
                     return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
                 })
                 this.setState({ list: newOrder, sortByToggle: !this.state.sortByToggle })
-                return console.log('alpha', newOrder)
+                break;
             case 'numeric':
                 newOrder = this.state.list.slice().sort((a, b) => {
                     let textA = a[key];
@@ -82,7 +95,7 @@ class InfoBox extends Component {
                     return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
                 })
                 this.setState({ list: newOrder, sortByToggle: !this.state.sortByToggle })
-                return console.log('numeric', newOrder)
+                break;
 
             default:
                 return console.log('sort by switch defaulted')
@@ -94,22 +107,10 @@ class InfoBox extends Component {
     }
 
     displayInfo(displaySwitch) {
+        // DisplayInfo changes what info is displayed based off displaySwitch this.props
         let list = []
         switch (displaySwitch) {
             case 'classes':
-                // list = this.props.dataList.map((x, i) => {
-                //     let average = ((this.averageTests(x.students) + this.averageAssignments(x.students)) / 2).toFixed(1);
-                //     return (
-                //         <Link key={i} to={'/class/' + x.class_id} style={{ textDecoration: 'none' }}>
-                //             <div className='InfoBoxContainer'>
-                //                 <h4>{x.class_name}</h4>
-                //                 <h4>{this.averageTests(x.students)}</h4>
-                //                 <h4>{this.averageAssignments(x.students)}</h4>
-                //                 <h4>{average}</h4>
-                //             </div>
-                //         </Link>
-                //     )
-                // })
                 list = this.state.list.map((x, i) => {
                     return (
                         <Link key={i} to={'/class/' + x.class_id} style={{ textDecoration: 'none' }}>
@@ -135,18 +136,6 @@ class InfoBox extends Component {
             )
         })
         let info = this.displayInfo(this.props.displaySwitch)
-        // let info = this.state.list.map((x, i) => {
-        //     return (
-        //         <Link key={i} to={'/class/' + x.class_id} style={{ textDecoration: 'none' }}>
-        //             <div className='InfoBoxContainer'>
-        //                 <h4>{x.name}</h4>
-        //                 <h4>{x.tests}</h4>
-        //                 <h4>{x.assignments}</h4>
-        //                 <h4>{x.average}</h4>
-        //             </div>
-        //         </Link>
-        //     )
-        // })
         return (
             <div className='InfoBox'>
                 <div className='InfoBoxHeader'>

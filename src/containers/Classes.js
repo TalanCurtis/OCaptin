@@ -6,7 +6,7 @@ import InfoBox from '../components/InfoBox';
 
 class Classes extends Component {
     componentDidMount() {
-        console.log('classes props:', this.props)
+        // console.log('classes props:', this.props)
     }
 
     render() {

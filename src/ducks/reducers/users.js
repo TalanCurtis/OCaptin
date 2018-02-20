@@ -22,7 +22,7 @@ export function getUser(){
 export function getTeacherClasses(id){
     let classes = []
     axios.get(`/api/home/${id}`).then((res) => {
-        console.log(res.data[0])
+        // console.log(res.data[0])
         /*  refrence for object in array returned
         { 
              assignment_desc:"Math Worksheet"
