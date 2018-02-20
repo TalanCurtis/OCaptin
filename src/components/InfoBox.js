@@ -46,6 +46,66 @@ class InfoBox extends Component {
         return total
     }
 
+    studentAverageTests(assignments){
+        let assignmentScores = 0
+        let amountOfAssignments = 0
+        for (let i in assignments){
+            if(assignments[i].kind === 'test'){
+                amountOfAssignments++
+                let percent = (assignments[i].score / assignments[i].score_max)*100
+                assignmentScores+= percent
+            }
+        }
+        let total = (assignmentScores / amountOfAssignments).toFixed(1)*1
+        return total
+    }
+
+    studentAverageAssignments(assignments){
+        let assignmentScores = 0
+        let amountOfAssignments = 0
+        for (let i in assignments){
+            if(assignments[i].kind === 'assignment'){
+                amountOfAssignments++
+                let percent = (assignments[i].score / assignments[i].score_max)*100
+                assignmentScores+= percent
+            }
+        }
+        let total = (assignmentScores / amountOfAssignments).toFixed(1)*1
+        return total
+    }
+
+  
+    sortBy(key, kind) {
+        // sortBy takes in the state 'key' you want to reorder and  'kind' numerc and alpha.
+        console.log('sort by: ', key, kind)
+        let newOrder = []
+        switch (kind) {
+            case 'alpha':
+                newOrder = this.state.list.slice().sort((a, b) => {
+                    let textA = a[key].toLowerCase();
+                    let textB = b[key].toLowerCase();
+                    return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
+                })
+                this.setState({ list: newOrder, sortByToggle: !this.state.sortByToggle })
+                break;
+            case 'numeric':
+                newOrder = this.state.list.slice().sort((a, b) => {
+                    let textA = a[key];
+                    let textB = b[key];
+                    return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
+                })
+                this.setState({ list: newOrder, sortByToggle: !this.state.sortByToggle })
+                break;
+
+            default:
+                return console.log('sort by switch defaulted')
+        }
+    }
+
+    test() {
+        console.log('test clicked', this.state)
+    }
+
     makeStateList(displaySwitch) {
         // makeStateList creates a list to populate state off of what info we want the infoBox to display
         let newList = []
@@ -89,40 +149,49 @@ class InfoBox extends Component {
                 // })
                 this.setState({ list: newList })
                 break;
+            case 'assignments':
+                console.log('assignments props:', this.props)
+                newList = this.props.dataList.filter((x) => x.kind === 'assignment')
+                newList = newList.map((x, i) => {
+                    return {
+                        name: x.desc,
+                        max_score: x.max,
+                        assignment_id: x.id,
+                        date_due: x.dateDue
+                    }
+                })
+                // alphabetizing base list
+                // newList.sort((a, b) => {
+                //     let textA = a.name.toUpperCase();
+                //     let textB = b.name.toUpperCase();
+                //     return (textA > textB)
+                // })
+                this.setState({ list: newList })
+                break;
+            case 'students':
+                console.log('student props:', this.props)
+                newList = this.props.dataList.map((x, i) => {
+                let average = ((this.studentAverageTests(x.marks) + this.studentAverageAssignments(x.marks)) / 2).toFixed(1);
+                    return {
+                        first_name: x.first_name,
+                        last_name: x.last_name,
+                        tests: this.studentAverageTests(x.marks),
+                        assignments: this.studentAverageAssignments(x.marks),
+                        average: average
+                    }
+                })
+                // alphabetizing base list
+                // newList.sort((a, b) => {
+                //     let textA = a.last_name.toUpperCase();
+                //     let textB = b.last_name.toUpperCase();
+                //     return (textA > textB)
+                // })
+                this.setState({ list: newList })
+                break;
             default:
                 return console.log('makeStateList defaulted');
         }
 
-    }
-
-    sortBy(key, kind) {
-        // sortBy takes in the state 'key' you want to reorder and  'kind' numerc and alpha.
-        let newOrder = []
-        switch (kind) {
-            case 'alpha':
-                newOrder = this.state.list.slice().sort((a, b) => {
-                    let textA = a[key].toUpperCase();
-                    let textB = b[key].toUpperCase();
-                    return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
-                })
-                this.setState({ list: newOrder, sortByToggle: !this.state.sortByToggle })
-                break;
-            case 'numeric':
-                newOrder = this.state.list.slice().sort((a, b) => {
-                    let textA = a[key];
-                    let textB = b[key];
-                    return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
-                })
-                this.setState({ list: newOrder, sortByToggle: !this.state.sortByToggle })
-                break;
-
-            default:
-                return console.log('sort by switch defaulted')
-        }
-    }
-
-    test() {
-        console.log('test clicked', this.state)
     }
 
     displayInfo(displaySwitch) {
@@ -150,6 +219,30 @@ class InfoBox extends Component {
                             <h4>{x.name}</h4>
                             <h4>{x.max_score}</h4>
                             <h4>{x.date_due}</h4>
+                        </div>
+                    )
+                })
+                return list;
+            case 'assignments':
+                list = this.state.list.map((x, i) => {
+                    return (
+                        <div key={i} className='InfoBoxContainer'>
+                            <h4>{x.name}</h4>
+                            <h4>{x.max_score}</h4>
+                            <h4>{x.date_due}</h4>
+                        </div>
+                    )
+                })
+                return list;
+            case 'students':
+                list = this.state.list.map((x, i) => {
+                    return (
+                        <div key={i} className='InfoBoxContainer'>
+                            <h4>{x.first_name}</h4>
+                            <h4>{x.last_name}</h4>
+                            <h4>{x.tests}</h4>
+                            <h4>{x.assignments}</h4>
+                            <h4>{x.average}</h4>
                         </div>
                     )
                 })

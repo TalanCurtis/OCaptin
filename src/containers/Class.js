@@ -7,18 +7,18 @@ class Class extends Component {
 
     componentDidMount() {
         // let classInfo = this.props.classes.find(x => x.class_id === (this.props.location.pathname.split('/').pop()) * 1)
-        console.log(this.props)
+        // console.log('class props: ',this.props)
         //console.log(classInfo)
         // let tests = classInfo.assignments.filter((x) => x.kind === 'test')
     }
 
     render() {
         let classInfo = this.props.classes.find(x => x.class_id === (this.props.location.pathname.split('/').pop()) * 1)
+        console.log('class info; ',classInfo)
         return (
             <div className='Class'>
-                <Header pageTitle='Class' />
-                <InfoBox
-                    title='Tests'
+                <Header pageTitle={classInfo.class_name} />
+                <InfoBox title='Tests'
                     displaySwitch='tests'
                     dataList={classInfo.assignments}
                     sortByButtons={[
@@ -27,6 +27,27 @@ class Class extends Component {
                         { name: 'Due Date', kind: 'numeric', key: 'due_date' }
                     ]}
                 />
+                <InfoBox title='Assignments'
+                    displaySwitch='assignments'
+                    dataList={classInfo.assignments}
+                    sortByButtons={[
+                        { name: 'Assignments', kind: 'alpha', key: 'name' },
+                        { name: 'Max Score', kind: 'numeric', key: 'tests' },
+                        { name: 'Due Date', kind: 'numeric', key: 'due_date' }
+                    ]}
+                />
+                <InfoBox title='Students'
+                    displaySwitch='students'
+                    dataList={classInfo.students}
+                    sortByButtons={[
+                        { name: 'First', kind: 'alpha', key: 'first_name' },
+                        { name: 'Last', kind: 'alpha', key: 'last_name' },
+                        { name: 'Tests', kind: 'numeric', key: 'tests' },
+                        { name: 'Assignments', kind: 'numeric', key: 'assignments' },
+                        { name: 'Average', kind: 'numeric', key: 'average' }
+                    ]}
+                />
+                
             </div>
         )
     }
