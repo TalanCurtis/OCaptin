@@ -84,7 +84,15 @@ class InfoBox extends Component {
                 newOrder = this.state.list.slice().sort((a, b) => {
                     let textA = a[key].toLowerCase();
                     let textB = b[key].toLowerCase();
-                    return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
+                    // return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
+                    if (this.state.sortByToggle) {
+                        if (textA > textB) { return -1 }
+                        if (textA < textB) { return 1 }
+                    } else {
+                        if (textA > textB) { return 1 }
+                        if (textA < textB) { return -1 }
+                    }
+                    return 0;
                 })
                 this.setState({ list: newOrder, sortByToggle: !this.state.sortByToggle })
                 break;
@@ -92,7 +100,15 @@ class InfoBox extends Component {
                 newOrder = this.state.list.slice().sort((a, b) => {
                     let textA = a[key];
                     let textB = b[key];
-                    return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
+                    //return (this.state.sortByToggle ? (textA > textB) : (textA < textB))
+                    if (this.state.sortByToggle) {
+                        if (textA > textB) { return -1 }
+                        if (textA < textB) { return 1 }
+                    } else {
+                        if (textA > textB) { return 1 }
+                        if (textA < textB) { return -1 }
+                    }
+                    return 0;
                 })
                 this.setState({ list: newOrder, sortByToggle: !this.state.sortByToggle })
                 break;
@@ -126,7 +142,9 @@ class InfoBox extends Component {
                 newList.sort((a, b) => {
                     let textA = a.name.toUpperCase();
                     let textB = b.name.toUpperCase();
-                    return (textA > textB)
+                    if (textA > textB) { return 1 }
+                    if (textA < textB) { return -1 }
+                    return 0;
                 })
                 this.setState({ list: newList })
                 break;
@@ -181,11 +199,13 @@ class InfoBox extends Component {
                     }
                 })
                 // alphabetizing base list
-                // newList.sort((a, b) => {
-                //     let textA = a.last_name.toUpperCase();
-                //     let textB = b.last_name.toUpperCase();
-                //     return (textA > textB)
-                // })
+                newList.sort((a, b) => {
+                    let textA = a.first_name.toUpperCase();
+                    let textB = b.first_name.toUpperCase();
+                    if (textA > textB) { return 1 }
+                    if (textA < textB) { return -1 }
+                    return 0;
+                })
                 this.setState({ list: newList })
                 break;
             default:
