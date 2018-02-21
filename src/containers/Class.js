@@ -19,6 +19,7 @@ class Class extends Component {
             <div className='Class'>
                 <Header pageTitle={classInfo.class_name} />
                 <InfoBox title='Tests'
+                    classId={classInfo.class_id}
                     displaySwitch='tests'
                     dataList={classInfo.assignments}
                     sortByButtons={[
@@ -28,6 +29,7 @@ class Class extends Component {
                     ]}
                 />
                 <InfoBox title='Assignments'
+                    classId={classInfo.class_id}
                     displaySwitch='assignments'
                     dataList={classInfo.assignments}
                     sortByButtons={[
@@ -37,6 +39,7 @@ class Class extends Component {
                     ]}
                 />
                 <InfoBox title='Students'
+                    classId={classInfo.class_id}
                     displaySwitch='students'
                     dataList={classInfo.students}
                     sortByButtons={[

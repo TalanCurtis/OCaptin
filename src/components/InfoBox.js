@@ -119,7 +119,8 @@ class InfoBox extends Component {
     }
 
     test() {
-        console.log('test clicked', this.state)
+        console.log('log state: ', this.state)
+        console.log('log props: ', this.props)
     }
 
     makeStateList(displaySwitch) {
@@ -195,7 +196,8 @@ class InfoBox extends Component {
                         last_name: x.last_name,
                         tests: this.studentAverageTests(x.marks),
                         assignments: this.studentAverageAssignments(x.marks),
-                        average: average
+                        average: average,
+                        id: x.student_id
                     }
                 })
                 // alphabetizing base list
@@ -303,14 +305,19 @@ class InfoBox extends Component {
                         <div key={i}><h3 onClick={() => this.sortBy(x.key, x.kind)}>{x.name}</h3></div>
                     )
                 })
+                let classId = this.props.classId * 1                
                 list = this.state.list.map((x, i) => {
                     return (
-                        <div key={i} className='InfoBoxContainer_Students'>
-                            <h4>{x.first_name}</h4>
-                            <h4>{x.last_name}</h4>
-                            <h4>{x.tests}</h4>
-                            <h4>{x.assignments}</h4>
-                            <h4>{x.average}</h4>
+                        <div>
+                            <Link className='Link' key={i} to={`/Class/${classId}/Student/${x.id}`} style={{ textDecoration: 'none' }}>
+                                <div key={i} className='InfoBoxContainer_Students'>
+                                    <h4>{x.first_name}</h4>
+                                    <h4>{x.last_name}</h4>
+                                    <h4>{x.tests}</h4>
+                                    <h4>{x.assignments}</h4>
+                                    <h4>{x.average}</h4>
+                                </div>
+                            </Link>
                         </div>
                     )
                 })
@@ -334,6 +341,7 @@ class InfoBox extends Component {
         return (
             <div>
                 {info}
+                <button onClick={()=>this.test()}>State</button>
             </div>
         )
     }

@@ -12,7 +12,7 @@ export default(
         <Route exact path='/' component={Auth}/>
         <Route path='/Home' component={Home} />
         <Route path='/Classes' component={Classes}/>
-        <Route path='/Class/Student' component={ClassStudent}/>
-        <Route path='/Class' component={Class}/>
+        <Route path='/Class/:class_id/Student/:student_id' component={ClassStudent}/>
+        <Route path='/Class/:class_id' component={Class}/>
     </Switch>
 )
