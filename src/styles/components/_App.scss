@@ -1,45 +1,138 @@
 @import '../variables';
 @import '../mixins';
 
-.outer_container {
-  width: 450px;
-  background: $dark;
-  margin: 50px auto;
-  @include shadow($medium);
-  h1 {
-    text-align: center;
-    color: $light;
-    padding: 50px 0 0 0;
-  }
-}
+// .outer_container {
+//   width: 450px;
+//   background: $dark;
+//   margin: 50px auto;
+//   @include shadow($medium);
+//   h1 {
+//     text-align: center;
+//     color: $light;
+//     padding: 50px 0 0 0;
+//   }
+// }
 
-.main_container {
+// .main_container {
+//   width: 100%;
+//   background: white;
+//   margin: 50px auto;
+//   padding: 75px;
+// }
+
+// .input_container {
+//   width: 100%;
+//   margin: 0 auto;
+//   padding: 10px 0;
+//   button {
+//     width: 50px;
+//   }
+//   input {
+//     width: calc(100% - 65px);
+//     margin: 0 10px 0 0;
+//     height: 25px;
+//     padding-left: 5px;
+//   }
+// }
+
+// .list_container {
+//   width: 30vw;
+// }
+
+// .ClassesInfo{
+//   display: flex;
+//   justify-content: space-around;
+// }
+.Classes{
+  height: 100%;
   width: 100%;
-  background: white;
-  margin: 50px auto;
-  padding: 75px;
+  display: grid;
+  grid-template-columns:repeat(1, 1fr) ;
+}
+.Header{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: $step4;
 }
 
-.input_container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 10px 0;
-  button {
-    width: 50px;
-  }
-  input {
-    width: calc(100% - 65px);
-    margin: 0 10px 0 0;
-    height: 25px;
-    padding-left: 5px;
-  }
+// InfoBox Specifics
+//// Classes
+.InfoBoxHeader_Classes{
+  background-color: $step3;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  padding: 4px;
 }
-
-.list_container {
-  width: 30vw;
+.InfoBoxList_Classes{
+  display: grid;
+  padding: 4px;
+  //grid-template-columns: repeat(4, 1fr); 
 }
-
-.ClassesInfo{
-  display: flex;
-  justify-content: space-around;
+.InfoBoxContainer_Classes{
+  padding: 4px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+}
+.InfoBoxList_Classes .Link:nth-child(even){
+  background-color: lighten($step2, $alterAmount);
+}
+//// Tests
+.InfoBoxHeader_Tests{
+  background-color: $step3;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  padding: 4px;
+}
+.InfoBoxList_Tests{
+  display: grid;
+  padding: 4px;
+  //grid-template-columns: repeat(4, 1fr); 
+}
+.InfoBoxContainer_Tests{
+  padding: 4px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+}
+.InfoBoxList_Tests div:nth-child(even){
+  background-color: lighten($step2, $alterAmount);
+}
+//// Assignments
+.InfoBoxHeader_Assignments{
+  background-color: $step3;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  padding: 4px;
+}
+.InfoBoxList_Assignments{
+  display: grid;
+  padding: 4px;
+  //grid-template-columns: repeat(4, 1fr); 
+}
+.InfoBoxContainer_Assignments{
+  padding: 4px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+}
+.InfoBoxList_Assignments div:nth-child(even){
+  background-color: lighten($step2, $alterAmount);
+}
+//// Students
+.InfoBoxHeader_Students{
+  background-color: $step3;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  padding: 4px;
+}
+.InfoBoxList_Students{
+  display: grid;
+  padding: 4px;
+  //grid-template-columns: repeat(4, 1fr); 
+}
+.InfoBoxContainer_Students{
+  padding: 4px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+}
+.InfoBoxList_Students div:nth-child(even){
+  background-color: lighten($step2, $alterAmount);
 }

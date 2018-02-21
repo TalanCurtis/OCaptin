@@ -46,35 +46,35 @@ class InfoBox extends Component {
         return total
     }
 
-    studentAverageTests(assignments){
+    studentAverageTests(assignments) {
         let assignmentScores = 0
         let amountOfAssignments = 0
-        for (let i in assignments){
-            if(assignments[i].kind === 'test'){
+        for (let i in assignments) {
+            if (assignments[i].kind === 'test') {
                 amountOfAssignments++
-                let percent = (assignments[i].score / assignments[i].score_max)*100
-                assignmentScores+= percent
+                let percent = (assignments[i].score / assignments[i].score_max) * 100
+                assignmentScores += percent
             }
         }
-        let total = (assignmentScores / amountOfAssignments).toFixed(1)*1
+        let total = (assignmentScores / amountOfAssignments).toFixed(1) * 1
         return total
     }
 
-    studentAverageAssignments(assignments){
+    studentAverageAssignments(assignments) {
         let assignmentScores = 0
         let amountOfAssignments = 0
-        for (let i in assignments){
-            if(assignments[i].kind === 'assignment'){
+        for (let i in assignments) {
+            if (assignments[i].kind === 'assignment') {
                 amountOfAssignments++
-                let percent = (assignments[i].score / assignments[i].score_max)*100
-                assignmentScores+= percent
+                let percent = (assignments[i].score / assignments[i].score_max) * 100
+                assignmentScores += percent
             }
         }
-        let total = (assignmentScores / amountOfAssignments).toFixed(1)*1
+        let total = (assignmentScores / amountOfAssignments).toFixed(1) * 1
         return total
     }
 
-  
+
     sortBy(key, kind) {
         // sortBy takes in the state 'key' you want to reorder and  'kind' numerc and alpha.
         console.log('sort by: ', key, kind)
@@ -171,7 +171,7 @@ class InfoBox extends Component {
             case 'students':
                 console.log('student props:', this.props)
                 newList = this.props.dataList.map((x, i) => {
-                let average = ((this.studentAverageTests(x.marks) + this.studentAverageAssignments(x.marks)) / 2).toFixed(1);
+                    let average = ((this.studentAverageTests(x.marks) + this.studentAverageAssignments(x.marks)) / 2).toFixed(1);
                     return {
                         first_name: x.first_name,
                         last_name: x.last_name,
@@ -197,12 +197,18 @@ class InfoBox extends Component {
     displayInfo(displaySwitch) {
         // DisplayInfo changes what info is displayed based off displaySwitch this.props
         let list = []
+        let headerButtons = []
         switch (displaySwitch) {
             case 'classes':
+                headerButtons = this.props.sortByButtons.map((x, i) => {
+                    return (
+                        <div key={i}><h3 onClick={() => this.sortBy(x.key, x.kind)}>{x.name}</h3></div>
+                    )
+                })
                 list = this.state.list.map((x, i) => {
                     return (
-                        <Link key={i} to={'/class/' + x.class_id} style={{ textDecoration: 'none' }}>
-                            <div className='InfoBoxContainer'>
+                        <Link className='Link' key={i} to={'/class/' + x.class_id} style={{ textDecoration: 'none' }}>
+                            <div className='InfoBoxContainer_Classes'>
                                 <h4>{x.name}</h4>
                                 <h4>{x.tests}</h4>
                                 <h4>{x.assignments}</h4>
@@ -211,33 +217,75 @@ class InfoBox extends Component {
                         </Link>
                     )
                 })
-                return list;
+                return (
+                    <div>
+                        <div className='InfoBoxHeader_Classes'>
+                            {headerButtons}
+                        </div>
+                        <div className='InfoBoxList_Classes'>
+                            {list}
+                        </div>
+                    </div>
+                )
             case 'tests':
+                headerButtons = this.props.sortByButtons.map((x, i) => {
+                    return (
+                        <div key={i}><h3 onClick={() => this.sortBy(x.key, x.kind)}>{x.name}</h3></div>
+                    )
+                })
                 list = this.state.list.map((x, i) => {
                     return (
-                        <div key={i} className='InfoBoxContainer'>
+                        <div key={i} className='InfoBoxContainer_Tests'>
                             <h4>{x.name}</h4>
                             <h4>{x.max_score}</h4>
                             <h4>{x.date_due}</h4>
                         </div>
                     )
                 })
-                return list;
+                return (
+                    <div>
+                        <div className='InfoBoxHeader_Tests'>
+                            {headerButtons}
+                        </div>
+                        <div className='InfoBoxList_Tests'>
+                            {list}
+                        </div>
+                    </div>
+                );
             case 'assignments':
+                headerButtons = this.props.sortByButtons.map((x, i) => {
+                    return (
+                        <div key={i}><h3 onClick={() => this.sortBy(x.key, x.kind)}>{x.name}</h3></div>
+                    )
+                })
                 list = this.state.list.map((x, i) => {
                     return (
-                        <div key={i} className='InfoBoxContainer'>
+                        <div key={i} className='InfoBoxContainer_Assignments'>
                             <h4>{x.name}</h4>
                             <h4>{x.max_score}</h4>
                             <h4>{x.date_due}</h4>
                         </div>
                     )
                 })
-                return list;
+                return (
+                    <div>
+                        <div className='InfoBoxHeader_Assignments'>
+                            {headerButtons}
+                        </div>
+                        <div className='InfoBoxList_Assignments'>
+                            {list}
+                        </div>
+                    </div>
+                );
             case 'students':
+                headerButtons = this.props.sortByButtons.map((x, i) => {
+                    return (
+                        <div key={i}><h3 onClick={() => this.sortBy(x.key, x.kind)}>{x.name}</h3></div>
+                    )
+                })
                 list = this.state.list.map((x, i) => {
                     return (
-                        <div key={i} className='InfoBoxContainer'>
+                        <div key={i} className='InfoBoxContainer_Students'>
                             <h4>{x.first_name}</h4>
                             <h4>{x.last_name}</h4>
                             <h4>{x.tests}</h4>
@@ -246,26 +294,26 @@ class InfoBox extends Component {
                         </div>
                     )
                 })
-                return list;
+                return (
+                    <div>
+                        <div className='InfoBoxHeader_Students'>
+                            {headerButtons}
+                        </div>
+                        <div className='InfoBoxList_Students'>
+                            {list}
+                        </div>
+                    </div>
+                );
             default:
                 return console.log('display info defaulted')
         }
     }
 
     render() {
-        let headerButtons = this.props.sortByButtons.map((x, i) => {
-            return (
-                <div key={i}><h3 onClick={() => this.sortBy(x.key, x.kind)}>{x.name}</h3></div>
-            )
-        })
         let info = this.displayInfo(this.props.displaySwitch)
         return (
-            <div className='InfoBox'>
-                <div className='InfoBoxHeader'>
-                    {headerButtons}
-                </div>
-                <div>{info}</div>
-                <button onClick={() => this.test()}>testprops</button>
+            <div>
+                {info}
             </div>
         )
     }
