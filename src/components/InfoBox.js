@@ -129,7 +129,6 @@ class InfoBox extends Component {
     handleSelectItem(selectedItem){
        switch (selectedItem.type) {
            case 'tests':
-               console.log('selectedItem: ', selectedItem)
                this.setState({selectedItem: true, selectedItemInfo: selectedItem})
                break;
        

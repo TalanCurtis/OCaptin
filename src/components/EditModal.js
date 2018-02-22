@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
+import axios from 'axios';
 
 class EditModal extends Component {
     constructor(props) {
         Modal.setAppElement('body');
         super(props);
         this.state = {
-            inputName: 'name',
-            inputScore: 20,
-            inputScoreMax: 90,
+            inputName: undefined,
+            inputScore: undefined,
+            inputScoreMax: undefined,
         }
     }
 
@@ -16,6 +17,35 @@ class EditModal extends Component {
         this.setState({
             [title]:value
         })
+    }
+
+    handleAccept(selectedItem){
+        //console.log('accept clicked', selectedItem)
+        switch (selectedItem.type) {
+            case 'tests':
+                console.log(' update selected Item', selectedItem)
+                let updatedItem = {
+                    name: this.state.inputName,
+                    scoreMax: this.state.inputScoreMax
+                }
+                // get updated info
+                updatedItem = Object.assign({}, selectedItem , updatedItem)
+                console.log(' update updated Item', updatedItem)
+                
+                // call to server  get response with new 
+                axios.put('/api/edit/assignment/'+updatedItem.id, updatedItem).then(res=>{
+                    console.log('respons info: ', res)
+                })
+                // Update redux store
+
+                // close modal
+                this.props.cancelSelectedItem()
+                console.log('close modal.')
+                break;
+        
+            default:
+                return 'handle accept in edit modal defaulted';
+        }
     }
 
     displaySwitch(switchVal) {
@@ -31,11 +61,11 @@ class EditModal extends Component {
                         </div>
                         <div>
                             <h3>Max Score: {this.props.selectedItemInfo.scoreMax}</h3>
-                            <input title='inputScoreMax' type="number" onChange={(e)=>(this.handleOnChange(e.target.title, e.target.value))}/>
+                            <input title='inputScoreMax' type="number" onChange={(e)=>(this.handleOnChange(e.target.title, e.target.value*1))}/>
                         </div>
                         <div>
                             <button onClick={this.props.cancelSelectedItem}>Cancel</button>
-                            <button onClick={this.props.cancelSelectedItem}>Accept</button>
+                            <button onClick={()=>this.handleAccept(this.props.selectedItemInfo)}>Accept</button>
                         </div>
                     </div>
                 );

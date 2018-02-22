@@ -119,6 +119,7 @@ app.get('/logout', (req, res) => {
 })
 
 // Teacher Endpoints
+/// not being used currently
 app.get('/api/classes/:id', (req, res, next) => {
     console.log('classes endpoint hit')
     let id = req.params.id;
@@ -130,6 +131,7 @@ app.get('/api/classes/:id', (req, res, next) => {
     })
 })
 
+/// Not being used currently
 app.get('/api/class/:id', (req, res, next) => {
     // making two db hits one for students and another for 
     // assignments sending both back in one response.
@@ -138,8 +140,8 @@ app.get('/api/class/:id', (req, res, next) => {
     const db = app.get('db');
     db.getInfo.get_students_in_class([id]).then(students => {
         // return that info
-        db.getInfo.get_assignments_in_class([id]).then(assignments=>{
-            let combine=[students, assignments]
+        db.getInfo.get_assignments_in_class([id]).then(assignments => {
+            let combine = [students, assignments]
             res.status(200).send(combine)
         })
     })
@@ -154,6 +156,17 @@ app.get('/api/home/:id', (req, res, next) => {
         // return that info
         res.status(200).send(dbResponse)
     })
+})
+
+app.put('/api/edit/assignment/:id', (req, res, next) => {
+    console.log('edit assignment hit with id: ', req.params.id)
+    console.log('req. body', req.body)
+    const { id, name, scoreMax } = req.body
+    const db = app.get('db');
+    db.edit.edit_test([id , name, scoreMax]).then(dbResponse => {
+        res.status(200).send(dbResponse)
+    })
+
 })
 
 // Set Server to listen
