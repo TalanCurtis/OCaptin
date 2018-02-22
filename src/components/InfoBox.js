@@ -9,7 +9,7 @@ class InfoBox extends Component {
             sortByToggle: false,
             list: [],
             selectedItem: false,
-            selectedItemInfo:[]
+            selectedItemInfo:{}
         }
     }
     componentDidMount() {
@@ -126,13 +126,11 @@ class InfoBox extends Component {
         console.log('log props: ', this.props)
     }
 
-    handleSelectItem(selectedType){
-       // console.log(arguments[0])
-       // this.setState({selectedItem: true, selectedItemInfo: arguments})
-       switch (selectedType) {
+    handleSelectItem(selectedItem){
+       switch (selectedItem.type) {
            case 'tests':
-               console.log('test arguments',arguments)
-               this.setState({selectedItem: true, selectedItemInfo: arguments})
+               console.log('selectedItem: ', selectedItem)
+               this.setState({selectedItem: true, selectedItemInfo: selectedItem})
                break;
        
            default:
@@ -278,7 +276,13 @@ class InfoBox extends Component {
                 list = this.state.list.map((x, i) => {
                     return (
                         <div key={i} className='InfoBoxContainer_Tests' 
-                        onClick={()=>this.handleSelectItem('tests', x.assignment_id, x.name, x.max_score, x.date_due)}>
+                        onClick={()=>this.handleSelectItem({
+                            type:'tests',
+                            id: x.assignment_id,
+                            name: x.name,
+                            scoreMax: x.max_score,
+                            dateDue: x.date_due
+                            })}>
                             <h4>{x.name}</h4>
                             <h4>{x.max_score}</h4>
                             <h4>{x.date_due}</h4>
