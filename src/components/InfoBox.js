@@ -8,7 +8,8 @@ class InfoBox extends Component {
         this.state = {
             sortByToggle: false,
             list: [],
-            selectedItem: false
+            selectedItem: false,
+            selectedItemInfo:[]
         }
     }
     componentDidMount() {
@@ -125,8 +126,18 @@ class InfoBox extends Component {
         console.log('log props: ', this.props)
     }
 
-    handleSelectItem(){
-        this.setState({selectedItem: true})
+    handleSelectItem(selectedType){
+       // console.log(arguments[0])
+       // this.setState({selectedItem: true, selectedItemInfo: arguments})
+       switch (selectedType) {
+           case 'tests':
+               console.log('test arguments',arguments)
+               this.setState({selectedItem: true, selectedItemInfo: arguments})
+               break;
+       
+           default:
+               return 'HandleSelectectItem defaulted';
+       }
     }
     cancelSelectedItem(){
         this.setState({selectedItem: false})
@@ -266,7 +277,8 @@ class InfoBox extends Component {
                 })
                 list = this.state.list.map((x, i) => {
                     return (
-                        <div key={i} className='InfoBoxContainer_Tests' onClick={()=>this.handleSelectItem()}>
+                        <div key={i} className='InfoBoxContainer_Tests' 
+                        onClick={()=>this.handleSelectItem('tests', x.assignment_id, x.name, x.max_score, x.date_due)}>
                             <h4>{x.name}</h4>
                             <h4>{x.max_score}</h4>
                             <h4>{x.date_due}</h4>
@@ -351,6 +363,7 @@ class InfoBox extends Component {
                 <button onClick={()=>this.test()}>State</button>
                 <EditModal 
                 selectedItem={this.state.selectedItem} 
+                selectedItemInfo={this.state.selectedItemInfo}
                 cancelSelectedItem={()=>this.cancelSelectedItem()}/>
             </div>
         )
