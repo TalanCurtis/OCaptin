@@ -59,5 +59,4 @@ class Class extends Component {
 function mapStateToProps(state) {
     return state
 }
-// uselesss comment delete me
 export default connect(mapStateToProps)(Class);
