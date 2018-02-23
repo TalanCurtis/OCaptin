@@ -24,7 +24,7 @@ class Class extends Component {
                     dataList={classInfo.assignments}
                     sortByButtons={[
                         { name: 'Tests', kind: 'alpha', key: 'name' },
-                        { name: 'Max Score', kind: 'numeric', key: 'tests' },
+                        { name: 'Max Score', kind: 'numeric', key: 'max_score' },
                         { name: 'Due Date', kind: 'numeric', key: 'due_date' }
                     ]}
                 />
@@ -34,7 +34,7 @@ class Class extends Component {
                     dataList={classInfo.assignments}
                     sortByButtons={[
                         { name: 'Assignments', kind: 'alpha', key: 'name' },
-                        { name: 'Max Score', kind: 'numeric', key: 'tests' },
+                        { name: 'Max Score', kind: 'numeric', key: 'max_score' },
                         { name: 'Due Date', kind: 'numeric', key: 'due_date' }
                     ]}
                 />

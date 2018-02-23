@@ -132,6 +132,9 @@ class InfoBox extends Component {
             case 'tests':
                 this.setState({ selectedItem: true, selectedItemInfo: selectedItem })
                 break;
+            case 'assignments':
+                this.setState({ selectedItem: true, selectedItemInfo: selectedItem })
+                break;
 
             default:
                 return 'HandleSelectectItem defaulted';
@@ -307,7 +310,14 @@ class InfoBox extends Component {
                 })
                 list = this.state.list.map((x, i) => {
                     return (
-                        <div key={i} className='InfoBoxContainer_Assignments'>
+                        <div key={i} className='InfoBoxContainer_Assignments'
+                        onClick={() => this.handleSelectItem({
+                                type: 'assignments',
+                                id: x.assignment_id,
+                                name: x.name,
+                                scoreMax: x.max_score,
+                                dateDue: x.date_due
+                            })}>
                             <h4>{x.name}</h4>
                             <h4>{x.max_score}</h4>
                             <h4>{x.date_due}</h4>
