@@ -2,24 +2,25 @@ import axios from 'axios';
 
 // Initial State user = {}
 const intialState = {
-    user:{}
+    user: {}
 }
 
 // Action
 const GET_USER = 'GET_USER';
-const GET_TEACHER_CLASSES = 'GET_TEACHER_CLASSES'
+const GET_TEACHER_CLASSES = 'GET_TEACHER_CLASSES';
+const EDIT_ASSIGNMENT = 'EDIT_ASSIGNMENT';
 
 // Action Creator
-export function getUser(){
+export function getUser() {
     const user = axios.get('/auth/me').then(res => {
         return res.data
     })
-    return{
+    return {
         type: GET_USER,
         payload: user
     }
 }
-export function getTeacherClasses(id){
+export function getTeacherClasses(id) {
     let classes = []
     axios.get(`/api/home/${id}`).then((res) => {
         // console.log(res.data[0])
@@ -59,7 +60,7 @@ export function getTeacherClasses(id){
                             student_id: res.data[i].student_id,
                             first_name: res.data[i].student_first_name,
                             last_name: res.data[i].student_last_name,
-                            marks:[]
+                            marks: []
                         })
                     }
                 }
@@ -83,21 +84,21 @@ export function getTeacherClasses(id){
         }
         // distribute the marks to the corresponding students;
         // if class id student id and mark id all match push into student marks
-        for(let i in classes){
-            for (let j in classes[i].students){
-                for (let k in res.data){
+        for (let i in classes) {
+            for (let j in classes[i].students) {
+                for (let k in res.data) {
                     if (res.data[k].class_id === classes[i].class_id &&
-                    res.data[k].student_id === classes[i].students[j].student_id &&
-                    res.data[k].mark_student_id === classes[i].students[j].student_id 
-                ){
-                    classes[i].students[j].marks.push({
-                        student_id: res.data[k].mark_student_id,
-                        id : res.data[k].mark_id,
-                        score: res.data[k].mark_score,
-                        score_max: res.data[k].assignment_max,
-                        assignment_id: res.data[k].assignment_id,
-                        kind: res.data[k].assignment_kind
-                    })
+                        res.data[k].student_id === classes[i].students[j].student_id &&
+                        res.data[k].mark_student_id === classes[i].students[j].student_id
+                    ) {
+                        classes[i].students[j].marks.push({
+                            student_id: res.data[k].mark_student_id,
+                            id: res.data[k].mark_id,
+                            score: res.data[k].mark_score,
+                            score_max: res.data[k].assignment_max,
+                            assignment_id: res.data[k].assignment_id,
+                            kind: res.data[k].assignment_kind
+                        })
                     }
                 }
             }
@@ -110,20 +111,83 @@ export function getTeacherClasses(id){
     }
 }
 
+export function editAssignment(updatedItem) {
+    const udatedItem = axios.put('/api/edit/assignment/' + updatedItem.id, updatedItem).then(res => { return res.data })
+    // update state object with the new info in the right places.
+    //let newState = this.state
+    console.log('Updated item', udatedItem)
+    // for every class
+    // go into assignments array
+    // find id that matches and update
+    /*
+        dateDue:"10/20/2015"
+        desc:"Math Worksheet"
+        id:4
+        kind:"assignment"
+        max:100
+     */
+    // then go into students array for each student
+    // go into marks
+    // find matching assignment id
+    /*
+        assignment_id:4
+        id:417
+        kind:"assignment"
+        score:80
+        score_max:100
+        student_id:58
+     */
+
+    return {
+        type: EDIT_ASSIGNMENT,
+        payload: updatedItem
+    }
+}
+
 
 // Reducer
-export default function reducer(state = intialState, action){
-    switch(action.type){
-        case GET_USER +'_FULFILLED': 
-            return Object.assign({}, state, {user:action.payload})
+export default function reducer(state = intialState, action) {
+    switch (action.type) {
+        case GET_USER + '_FULFILLED':
+            return Object.assign({}, state, { user: action.payload })
         /*
         if slow you could add a loading screen
         case GET_USER +'_PENDING': 
             return Object.assign({}, state, {user:action.payload})
         */
         case GET_TEACHER_CLASSES:
-            return Object.assign({}, state , {classes: action.payload})
-        default: 
+            return Object.assign({}, state, { classes: action.payload })
+        case EDIT_ASSIGNMENT:
+            let newState = Object.assign({}, state)//{...state}
+            for (let i in newState.classes) {
+                // Find the assigment in the class assignemts and update
+                for (let j in newState.classes[i].assignments) {
+                    if (newState.classes[i].assignments[j].id === action.payload.id) {
+                        newState.classes[i].assignments[j] = Object.assign({}, newState.classes[i].assignments[j], {
+                            desc: action.payload.name,
+                            max: action.payload.scoreMax
+                        })
+                    }
+                }
+                // Find the assigment in the students marks to update max score
+                for (let j in newState.classes[i].students) {
+                    for (let k in newState.classes[i].students[j].marks) {
+                        if (newState.classes[i].students[j].marks[k].assignment_id === action.payload.id) {
+                            newState.classes[i].students[j].marks[k] = Object.assign({},
+                                newState.classes[i].students[j].marks[k],
+                                {
+                                    score_max: action.payload.scoreMax
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            console.log('EDIT_ASSIGNMENT STATE ; ', state)
+            console.log('EDIT_ASSIGNMENT NewSTATE ; ', newState)
+
+            return Object.assign({}, state, newState)
+        default:
             return state;
     }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import EditModal from '../components/EditModal';
+import { connect } from 'react-redux';
 
 class InfoBox extends Component {
     constructor() {
@@ -9,7 +10,7 @@ class InfoBox extends Component {
             sortByToggle: false,
             list: [],
             selectedItem: false,
-            selectedItemInfo:{}
+            selectedItemInfo: {}
         }
     }
     componentDidMount() {
@@ -126,18 +127,18 @@ class InfoBox extends Component {
         console.log('log props: ', this.props)
     }
 
-    handleSelectItem(selectedItem){
-       switch (selectedItem.type) {
-           case 'tests':
-               this.setState({selectedItem: true, selectedItemInfo: selectedItem})
-               break;
-       
-           default:
-               return 'HandleSelectectItem defaulted';
-       }
+    handleSelectItem(selectedItem) {
+        switch (selectedItem.type) {
+            case 'tests':
+                this.setState({ selectedItem: true, selectedItemInfo: selectedItem })
+                break;
+
+            default:
+                return 'HandleSelectectItem defaulted';
+        }
     }
-    cancelSelectedItem(){
-        this.setState({selectedItem: false})
+    cancelSelectedItem() {
+        this.setState({ selectedItem: false })
     }
 
     makeStateList(displaySwitch) {
@@ -274,13 +275,13 @@ class InfoBox extends Component {
                 })
                 list = this.state.list.map((x, i) => {
                     return (
-                        <div key={i} className='InfoBoxContainer_Tests' 
-                        onClick={()=>this.handleSelectItem({
-                            type:'tests',
-                            id: x.assignment_id,
-                            name: x.name,
-                            scoreMax: x.max_score,
-                            dateDue: x.date_due
+                        <div key={i} className='InfoBoxContainer_Tests'
+                            onClick={() => this.handleSelectItem({
+                                type: 'tests',
+                                id: x.assignment_id,
+                                name: x.name,
+                                scoreMax: x.max_score,
+                                dateDue: x.date_due
                             })}>
                             <h4>{x.name}</h4>
                             <h4>{x.max_score}</h4>
@@ -329,18 +330,18 @@ class InfoBox extends Component {
                         <div key={i}><h3 onClick={() => this.sortBy(x.key, x.kind)}>{x.name}</h3></div>
                     )
                 })
-                let classId = this.props.classId * 1                
+                let classId = this.props.classId * 1
                 list = this.state.list.map((x, i) => {
                     return (
-                            <Link className='Link' key={i} to={`/Class/${classId}/Student/${x.id}`} style={{ textDecoration: 'none' }}>
-                                <div key={i} className='InfoBoxContainer_Students'>
-                                    <h4>{x.first_name}</h4>
-                                    <h4>{x.last_name}</h4>
-                                    <h4>{x.tests}</h4>
-                                    <h4>{x.assignments}</h4>
-                                    <h4>{x.average}</h4>
-                                </div>
-                            </Link>
+                        <Link className='Link' key={i} to={`/Class/${classId}/Student/${x.id}`} style={{ textDecoration: 'none' }}>
+                            <div key={i} className='InfoBoxContainer_Students'>
+                                <h4>{x.first_name}</h4>
+                                <h4>{x.last_name}</h4>
+                                <h4>{x.tests}</h4>
+                                <h4>{x.assignments}</h4>
+                                <h4>{x.average}</h4>
+                            </div>
+                        </Link>
                     )
                 })
                 return (
@@ -363,14 +364,17 @@ class InfoBox extends Component {
         return (
             <div>
                 {info}
-                <button onClick={()=>this.test()}>State</button>
-                <EditModal 
-                selectedItem={this.state.selectedItem} 
-                selectedItemInfo={this.state.selectedItemInfo}
-                cancelSelectedItem={()=>this.cancelSelectedItem()}/>
+                <button onClick={() => this.test()}>State</button>
+                <EditModal
+                    selectedItem={this.state.selectedItem}
+                    selectedItemInfo={this.state.selectedItemInfo}
+                    cancelSelectedItem={() => this.cancelSelectedItem()} />
             </div>
         )
     }
 }
 
-export default InfoBox;
+function mapStateToProps(state) {
+    return state;
+}
+export default connect(mapStateToProps)(InfoBox);

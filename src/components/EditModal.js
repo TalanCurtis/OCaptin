@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
+// import axios from 'axios';
+import { connect } from 'react-redux';
+import { editAssignment } from '../ducks/reducers/users';
 
 class EditModal extends Component {
     constructor(props) {
@@ -15,11 +17,11 @@ class EditModal extends Component {
 
     handleOnChange(title, value) {
         this.setState({
-            [title]:value
+            [title]: value
         })
     }
 
-    handleAccept(selectedItem){
+    handleAccept(selectedItem) {
         //console.log('accept clicked', selectedItem)
         switch (selectedItem.type) {
             case 'tests':
@@ -29,20 +31,17 @@ class EditModal extends Component {
                     scoreMax: this.state.inputScoreMax
                 }
                 // get updated info
-                updatedItem = Object.assign({}, selectedItem , updatedItem)
+                updatedItem = Object.assign({}, selectedItem, updatedItem)
                 console.log(' update updated Item', updatedItem)
-                
-                // call to server  get response with new 
-                axios.put('/api/edit/assignment/'+updatedItem.id, updatedItem).then(res=>{
-                    console.log('respons info: ', res)
-                })
+
+                // sending to reducer
+                this.props.editAssignment(updatedItem)
                 // Update redux store
 
                 // close modal
                 this.props.cancelSelectedItem()
-                console.log('close modal.')
                 break;
-        
+
             default:
                 return 'handle accept in edit modal defaulted';
         }
@@ -57,15 +56,15 @@ class EditModal extends Component {
                         <h3>{this.props.selectedItemInfo.name}</h3>
                         <div>
                             <h3>Name: {this.props.selectedItemInfo.name}</h3>
-                            <input title='inputName' type="text" onChange={(e)=>(this.handleOnChange(e.target.title, e.target.value))}/>
+                            <input title='inputName' type="text" onChange={(e) => (this.handleOnChange(e.target.title, e.target.value))} />
                         </div>
                         <div>
                             <h3>Max Score: {this.props.selectedItemInfo.scoreMax}</h3>
-                            <input title='inputScoreMax' type="number" onChange={(e)=>(this.handleOnChange(e.target.title, e.target.value*1))}/>
+                            <input title='inputScoreMax' type="number" onChange={(e) => (this.handleOnChange(e.target.title, e.target.value * 1))} />
                         </div>
                         <div>
                             <button onClick={this.props.cancelSelectedItem}>Cancel</button>
-                            <button onClick={()=>this.handleAccept(this.props.selectedItemInfo)}>Accept</button>
+                            <button onClick={() => this.handleAccept(this.props.selectedItemInfo)}>Accept</button>
                         </div>
                     </div>
                 );
@@ -76,6 +75,7 @@ class EditModal extends Component {
     }
 
     render() {
+        // console.log('modal props: ',this.props)
         return (
             <Modal
                 isOpen={!!this.props.selectedItem}
@@ -91,6 +91,8 @@ class EditModal extends Component {
     }
 }
 
+function mapStateToProps(state){
+    return state;
+}
 
-
-export default EditModal;
+export default connect(mapStateToProps, { editAssignment: editAssignment })(EditModal);
