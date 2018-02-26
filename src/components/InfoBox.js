@@ -142,6 +142,8 @@ class InfoBox extends Component {
     }
     cancelSelectedItem() {
         this.setState({ selectedItem: false })
+        this.makeStateList(this.props.displaySwitch)
+        //this.forceUpdate()
     }
 
     makeStateList(displaySwitch) {
