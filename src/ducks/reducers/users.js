@@ -9,8 +9,20 @@ const intialState = {
 const GET_USER = 'GET_USER';
 const GET_TEACHER_CLASSES = 'GET_TEACHER_CLASSES';
 const EDIT_ASSIGNMENT = 'EDIT_ASSIGNMENT';
+const ADD_ASSIGNMENT = 'ADD_ASSIGNMENT';
 
 // Action Creator
+export function addAssignment(body){
+    console.log('this is the body on the reducer', body)
+    // ping database with body add  it get update info put it on state.
+    const newAssignment = axios.post('/api/add/assignment/', body).then(res=>{
+        return res.data
+    })
+    return {
+        type: ADD_ASSIGNMENT,
+        payload: 'THIS NEEDS TO BE DATABASE RESPONSE'
+    }
+}
 export function getUser() {
     const user = axios.get('/auth/me').then(res => {
         return res.data
@@ -155,6 +167,8 @@ export default function reducer(state = intialState, action) {
         case GET_USER +'_PENDING': 
             return Object.assign({}, state, {user:action.payload})
         */
+        case ADD_ASSIGNMENT:
+            return state;
         case GET_TEACHER_CLASSES:
             return Object.assign({}, state, { classes: action.payload })
         case EDIT_ASSIGNMENT:

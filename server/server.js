@@ -166,7 +166,16 @@ app.put('/api/edit/assignment/:id', (req, res, next) => {
     db.edit.edit_test([id , name, scoreMax]).then(dbResponse => {
         res.status(200).send(dbResponse)
     })
+})
 
+app.post('/api/add/assignment/', (req, res, next)=>{
+    console.log('req.body', req.body)
+    const {class_id, description, due_date, kind, max_score} = req.body;
+    const db = app.get('db');
+    db.edit.add_test([kind, max_score, description, due_date, class_id]).then(dbResponse=>{
+        res.status(200).send(dbResponse)
+    })
+    
 })
 
 // Set Server to listen

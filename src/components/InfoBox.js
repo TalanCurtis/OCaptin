@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import EditModal from '../components/EditModal';
+import AddModal from '../components/AddModal';
+import getTeacherClasses from '../ducks/reducers/users';
 import { connect } from 'react-redux';
 
 class InfoBox extends Component {
@@ -10,7 +12,8 @@ class InfoBox extends Component {
             sortByToggle: false,
             list: [],
             selectedItem: false,
-            selectedItemInfo: {}
+            selectedItemInfo: {},
+            displayAddAssignmentModal: false,
         }
     }
     componentDidMount() {
@@ -146,6 +149,19 @@ class InfoBox extends Component {
         //this.forceUpdate()
     }
 
+    openAddAssignment(){
+        this.setState({displayAddAssignmentModal: true})
+    }
+    addAssignment(){
+        console.log('add assignment')
+        this.props.getTeacherClasses(this.props.user.id)
+       this.makeStateList(this.props.displaySwitch)
+        // this.forceUpdate()
+    }
+    cancleAddAssignment(){
+        console.log('add assignment')
+        this.setState({displayAddAssignmentModal: false})
+    }
     makeStateList(displaySwitch) {
         // makeStateList creates a list to populate state off of what info we want the infoBox to display
         let newList = []
@@ -298,6 +314,7 @@ class InfoBox extends Component {
                     <div>
                         <div className='InfoBoxHeader_Tests'>
                             {headerButtons}
+                            <button onClick={()=>this.openAddAssignment()}>Add</button>
                         </div>
                         <div className='InfoBoxList_Tests'>
                             {list}
@@ -381,6 +398,11 @@ class InfoBox extends Component {
                     selectedItem={this.state.selectedItem}
                     selectedItemInfo={this.state.selectedItemInfo}
                     cancelSelectedItem={() => this.cancelSelectedItem()} />
+                <AddModal 
+                addAssignment={()=>this.addAssignment()}
+                classId={this.props.classId}
+                cancleAddAssignment={()=>this.cancleAddAssignment()}
+                displayAddAssignmentModal={this.state.displayAddAssignmentModal}/>
             </div>
         )
     }

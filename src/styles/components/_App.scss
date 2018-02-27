@@ -80,7 +80,7 @@
 .InfoBoxHeader_Tests{
   background-color: $step3;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); 
+  grid-template-columns: repeat(3, 1fr) 40px; 
   padding: 4px;
 }
 .InfoBoxList_Tests{
@@ -91,7 +91,7 @@
 .InfoBoxContainer_Tests{
   padding: 4px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); 
+  grid-template-columns: repeat(3, 1fr) 40px; 
 }
 .InfoBoxList_Tests div:nth-child(even){
   background-color: lighten($step2, $alterAmount);
